@@ -1,0 +1,45 @@
+mat-form-field {
+  width: 100%;
+}
+
+.input-container {
+  margin-top: 1rem;
+}
+
+.input-field {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 2px solid gray;
+  border-radius: 6px;
+}
+
+.mat-mdc-button.mat-mdc-button-base, .mat-mdc-raised-button.mat-mdc-button-base, .mat-mdc-unelevated-button.mat-mdc-button-base, .mat-mdc-outlined-button.mat-mdc-button-base {
+  height: 56px;
+}
+
+.phone-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.phone-input {
+  width: 100%;
+  position: relative;
+}
+
+.remove-phone {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
+
+input[matInput] {
+  padding-right: 25px;
+}

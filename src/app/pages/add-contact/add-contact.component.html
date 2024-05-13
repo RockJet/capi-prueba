@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>{{data.action == 'add' ? 'Crear' : data.action == 'edit' ? 'Editar' : 'Ver'}} contacto</h2>
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.hasError('required')">
+        El nombre es necesario.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="input-container">
+      <span>Teléfonos</span>
+      <div class="input-field" formArrayName="phones">
+        <div *ngFor="let phone of phones.controls; let i = index" class="phone-group">
+          <mat-form-field class="phone-input">
+            <mat-label>Teléfono {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i">
+            <span class="remove-phone" (click)="removePhone(i)">&#x2715;</span>
+          </mat-form-field>
+        </div>
+        <button class="add-phone" mat-button (click)="addPhone()">Agregar Teléfono</button>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <span>Emails</span>
+      <div class="input-field" formArrayName="emails">
+        <div *ngFor="let email of emails.controls; let i = index" class="phone-group">
+          <mat-form-field class="phone-input">
+            <mat-label>Email {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i">
+            <span class="remove-phone" (click)="removeEmail(i)">&#x2715;</span>
+          </mat-form-field>
+        </div>
+        <button class="add-phone" mat-button (click)="addEmail()">Agregar Email</button>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <span>Direcciones</span>
+      <div class="input-field" formArrayName="addresses">
+        <div *ngFor="let address of addresses.controls; let i = index" class="phone-group">
+          <mat-form-field class="phone-input">
+            <mat-label>Dirección {{ i + 1 }}</mat-label>
+            <input matInput [formControlName]="i">
+            <span class="remove-phone" (click)="removeAddress(i)">&#x2715;</span>
+            <mat-error *ngIf="address.touched && address.hasError('required')">
+              Este campo es necesario.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <button class="add-phone" mat-button (click)="addAddress()">Agregar Dirección</button>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-stroked-button mat-button mat-dialog-close type="button">Cancelar</button>
+  <button *ngIf="data.action != 'view'" mat-stroked-button color="primary" mat-button type="submit">{{data.action == 'add' ? 'Crear' : 'Editar'}}</button>
+</mat-dialog-actions>
+</form>
