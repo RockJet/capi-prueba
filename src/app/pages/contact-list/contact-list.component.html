@@ -2,7 +2,7 @@
 
   <div class="toolbar">
     <mat-form-field class="search">
-      <mat-label>Buscar</mat-label>
+      <mat-label>Buscar por nombre o atributos</mat-label>
       <input matInput [formControl]="searchControl" placeholder="Buscar...">
     </mat-form-field>
 
@@ -36,7 +36,7 @@
   </ng-container>
 
 
-  <mat-paginator [length]="totalElements" [pageSize]="100" [pageIndex]="currentPage" (page)="pageEvent($event)">
+  <mat-paginator [length]="totalElements" [pageSize]="30" [pageIndex]="currentPage" (page)="pageEvent($event)">
   </mat-paginator>
 
   <ng-template #loading>

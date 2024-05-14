@@ -51,7 +51,6 @@ export class ContactListComponent implements OnInit {
   }
 
   editContact(contact: Contact) {
-    console.log(contact)
     const dialogRef = this.dialog.open(AddContactComponent, {
       data: { action: 'edit', contact: contact },
       height: 'auto',
