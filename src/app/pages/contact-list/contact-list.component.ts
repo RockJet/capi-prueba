@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddContactComponent } from '../add-contact/add-contact.component';
+import { Observable, map, of, take } from 'rxjs';
+import { Contact } from 'src/models/contact';
+import { ContactsService } from 'src/app/services/contacts.service';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-contact-list',
@@ -9,33 +13,68 @@ import { AddContactComponent } from '../add-contact/add-contact.component';
 })
 export class ContactListComponent {
   displayedColumns: string[] = ['id', 'name', 'actions'];
-  contacts = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' },
-    { id: 3, name: 'Charlie' }
-  ];
+  contacts$: Observable<Contact[]> | undefined = undefined
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private contactsService: ContactsService) {
+    this.fetchContacts();
+  }
 
-  viewDetails(contact: any) {
+  private fetchContacts() {
+    this.contacts$ = this.contactsService.getContacts();
+  }
+  viewDetails(contact: Contact) {
     this.dialog.open(AddContactComponent, {
       data: { action: 'view', contact: contact },
       height: 'auto',
       width: '600px',
     });
   }
-  editContact(contact: any) {
-    this.dialog.open(AddContactComponent, {
+  editContact(contact: Contact) {
+    console.log(contact)
+    const dialogRef = this.dialog.open(AddContactComponent, {
       data: { action: 'edit', contact: contact },
       height: 'auto',
       width: '600px',
     });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.fetchContacts()
+      }
+    });
+  }
+  deleteContact(contact: Contact) {
+    const dialogData = {
+      title: 'Confirmar',
+      message: 'Estas seguro que quieres eliminar este contacto?',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Eliminar'
+    };
+
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.contactsService.deleteContact(contact.id).pipe(take(1), map(() => {
+          this.fetchContacts();
+        })
+        ).subscribe()
+      }
+    });
   }
   openAddContactModal() {
-    this.dialog.open(AddContactComponent, {
+    const dialogRef = this.dialog.open(AddContactComponent, {
       data: { action: 'add', contact: undefined },
       height: 'auto',
       width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetchContacts();
+      }
     });
   }
 }
