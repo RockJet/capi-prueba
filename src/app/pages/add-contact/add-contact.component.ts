@@ -33,8 +33,8 @@ export class AddContactComponent {
       }
 
       if (this.data.contact.emails) {
-        const phoneArray = this.phones;
-        this.data.contact.phones.forEach((phone: string) => {
+        const phoneArray = this.emails;
+        this.data.contact.emails.forEach((phone: string) => {
           phoneArray.push(this.fb.control(phone));
         });
       }

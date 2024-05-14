@@ -16,14 +16,20 @@ export class ContactsService {
 
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
-  public getContacts(): Observable<Contact[]> {
-    return this.http.get<unknown[]>(`${this.apiUrl}`).pipe(
-      map((data: any) => data.data.map((contact: Contact) => new Contact(contact))),
-      catchError(error => {
+  public getContacts(page: number, search: string): Observable<ContactsResponse> {
+    return this.http.get<unknown[]>(`${this.apiUrl}?page=${page + 1}&search=${search}`).pipe(
+      map((data: any) => {
+        return {
+          contacts: data.data,
+          current_page: data.pagination.current_page,
+          last_page: data.pagination.last_page,
+          from: data.pagination.from,
+          total: data.pagination.total
+        } as ContactsResponse
+      })).pipe(      catchError(error => {
         this.errorMessage(error.message);
-        return of([]);
-      })
-    );
+        return of();
+      }))
   }
 
 
@@ -80,4 +86,12 @@ export interface ContactReq {
   phones: string[]
   emails: string[]
   addresses: string[]
+}
+
+export interface ContactsResponse {
+  contacts: ContactReq[]
+  current_page: number
+  last_page: number
+  from: number
+  total: number
 }

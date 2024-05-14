@@ -11,10 +11,23 @@ table {
   }
 }
 
-.add-btn {
-  margin-bottom: 0.5rem;
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
+
+.mat-form-field {
+  flex: 1;
+}
+
 
 .table-btn {
   margin-right: 4px;
+}
+
+.search {
+  min-width: 200px;
+  width: 40%;
 }

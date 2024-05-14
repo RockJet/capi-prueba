@@ -1,9 +1,15 @@
 <div class="container">
 
-  <ng-container *ngIf="contacts$ | async as contacts; else loading">
-    <button class="add-btn" mat-raised-button color="primary" (click)="openAddContactModal()">Agregar contacto</button>
+  <div class="toolbar">
+    <mat-form-field class="search">
+      <mat-label>Buscar</mat-label>
+      <input matInput [formControl]="searchControl" placeholder="Buscar...">
+    </mat-form-field>
 
-    <table mat-table [dataSource]="contacts" class="mat-elevation-z8">
+    <button class="add-btn" mat-raised-button color="primary" (click)="openAddContactModal()">Agregar contacto</button>
+  </div>
+  <ng-container *ngIf="contactsResponse$ | async as contactsResponse; else loading">
+    <table mat-table [dataSource]="contactsResponse.contacts" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let contact">{{ contact.id }}</td>
@@ -26,8 +32,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
   </ng-container>
 
+
+  <mat-paginator [length]="totalElements" [pageSize]="100" [pageIndex]="currentPage" (page)="pageEvent($event)">
+  </mat-paginator>
 
   <ng-template #loading>
     <app-loading></app-loading>

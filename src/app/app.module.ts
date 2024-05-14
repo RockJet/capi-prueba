@@ -20,6 +20,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { LoadingComponent } from './loading/loading.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { DeleteConfirmationComponent } from './pages/contact-list/delete-confirmation/delete-confirmation.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 registerLocaleData(localeEs, 'es')
 
@@ -47,7 +48,8 @@ registerLocaleData(localeEs, 'es')
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule
   ],
   providers: [
     {
